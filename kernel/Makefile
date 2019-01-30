@@ -1,52 +1,26 @@
-SRCS=	\
-  src/boot/boot.o \
-	src/kernel/kernel.o \
-	src/arch/common.o \
-	src/dev/vga.o \
-	src/libk/stdlib.o \
-	src/arch/gdt.o \
-	src/arch/gdt_setup.o \
-	src/arch/idt.o \
-	src/arch/idt_setup.o \
-	src/arch/isr.o \
-	src/arch/isr_setup.o \
-	src/arch/irq.o \
-	src/arch/irq_setup.o \
-	src/dev/timer.o \
-	src/dev/keyboard.o \
-	src/mem/pmm.o \
-	src/arch/paging_setup.o \
-	src/mem/pde.o \
-	src/mem/pte.o \
-	src/mem/vmm.o \
-	src/libk/string.o \
-	src/libk/stdio.o \
-	src/libk/ctype.o
+CC	= i686-elf-gcc
+AS	= nasm
+LD	= i686-elf-ld
 
-CFLAGS=-nostdlib -nostdinc -fno-builtin -fno-stack-protector -std=c11 -g -I ./inc -D DEBUG
-LDFLAGS=-T ./conf/link-kernel.ld
-ASFLAGS= -f elf
+CFLAGS	:= -fno-builtin -fno-stack-protector -std=c11 -g -I ./inc -D DEBUG
+ASFLAGS	:= -f elf
+LDFLAGS	:= -T ./conf/link-kernel.ld
 
-LD=/opt/cross/bin/i386-elf-ld
-AS=nasm
-CC=/opt/cross/bin/i386-elf-gcc
+SRCS	:= $(shell find src -name "*.s" -o -name "*.c")
+OBJS	:= $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCS)))
 
-all: $(SRCS) link
+all: ./bin/kernel
 
 clean:
-	-rm src/arch/*.o src/mem/*.o src/kernel/*.o src/libk/*.o src/dev/*.o src/boot/*.o  bin/kernel
+	-rm -rf $(OBJS) ./bin/kernel
 
-run:
+run: ./bin/kernel
 	-qemu-system-i386 -kernel ./bin/kernel -monitor stdio
 
-debug:
+debug: ./bin/kernel
 	-qemu-system-i386 -kernel ./bin/kernel -s -S&
 	-sleep 1
 	-gdb
 
-
-link:
-	$(LD) $(LDFLAGS) -o ./bin/kernel $(SRCS)
-
-.s.o:
-	$(AS) $(ASFLAGS) $<
+./bin/kernel: $(OBJS)
+	$(LD) $(LDFLAGS) -o ./bin/kernel $(OBJS)
