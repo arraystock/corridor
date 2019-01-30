@@ -15,7 +15,7 @@ extern int end;
 
 int k_main(struct multiboot_info *mboot) {
   monitor_clear();
-  printf("Welcome to Kernel!\n");
+  printf("Welcome to corridor!\n");
 
   // Install the descriptor tables.
   gdt_install();
