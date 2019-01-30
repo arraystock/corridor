@@ -9,6 +9,8 @@ LDFLAGS	:= -T ./conf/link-kernel.ld
 SRCS	:= $(shell find src -name "*.s" -o -name "*.c")
 OBJS	:= $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCS)))
 
+FORMAT	:= $(shell find . -name "*.c") $(shell find . -name "*.h")
+
 all: ./bin/kernel
 
 clean:
@@ -21,6 +23,9 @@ debug: ./bin/kernel
 	-qemu-system-i386 -kernel ./bin/kernel -s -S&
 	-sleep 1
 	-gdb
+
+clang-format:
+	clang-format -style=llvm -i $(FORMAT)
 
 ./bin/kernel: $(OBJS)
 	-@mkdir bin/
