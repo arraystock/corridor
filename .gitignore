@@ -1,1 +1,6 @@
+# Directories
+bin/
+
+# Object files
 *.o
+*.elf

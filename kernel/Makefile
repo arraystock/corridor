@@ -12,7 +12,7 @@ OBJS	:= $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCS)))
 all: ./bin/kernel
 
 clean:
-	-rm -rf $(OBJS) ./bin/kernel
+	-rm -rf $(OBJS) ./bin/
 
 run: ./bin/kernel
 	-qemu-system-i386 -kernel ./bin/kernel -monitor stdio
@@ -23,4 +23,5 @@ debug: ./bin/kernel
 	-gdb
 
 ./bin/kernel: $(OBJS)
+	-@mkdir bin/
 	$(LD) $(LDFLAGS) -o ./bin/kernel $(OBJS)
