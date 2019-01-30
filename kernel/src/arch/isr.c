@@ -1,5 +1,6 @@
 #include <arch/idt.h>
 #include <arch/isr.h>
+#include <libk/stdio.h>
 #include <libk/stdlib.h>
 
 /* These are function prototypes for all of the exception
@@ -108,6 +109,10 @@ void isr_install() {
   idt_set_gate(29, (unsigned)isr29, 0x08, 0x8E);
   idt_set_gate(30, (unsigned)isr30, 0x08, 0x8E);
   idt_set_gate(31, (unsigned)isr31, 0x08, 0x8E);
+
+#ifdef DEBUG
+  printf("ISRs installed.\n");
+#endif
 }
 
 /* All of our Exception handling Interrupt Service Routines will

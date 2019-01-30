@@ -2,6 +2,7 @@
 #include <arch/irq.h>
 #include <dev/keyboard.h>
 #include <dev/vga.h>
+#include <libk/stdio.h>
 
 unsigned char us_lowercase[128] = {
     0,    27,  '1', '2', '3',  '4', '5', '6', '7',  '8', /* 9 */
@@ -101,4 +102,10 @@ void keyboard_handler(struct regs *r) {
 }
 
 /* Installs the keyboard handler into IRQ1 */
-void keyboard_install() { irq_install_handler(1, keyboard_handler); }
+void keyboard_install() {
+  irq_install_handler(1, keyboard_handler);
+
+#ifdef DEBUG
+  printf("Keyboard working!\n");
+#endif
+}

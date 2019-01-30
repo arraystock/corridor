@@ -1,6 +1,7 @@
 #include <arch/common.h>
 #include <arch/irq.h>
 #include <dev/timer.h>
+#include <libk/stdio.h>
 
 volatile unsigned int timer_ticks = 0;
 
@@ -23,6 +24,10 @@ void timer_install() {
   set_timer_phase(100);
   /* Installs 'timer_handler' to IRQ0 */
   irq_install_handler(0, timer_handler);
+
+#ifdef DEBUG
+  printf("Timer working!\n");
+#endif
 }
 
 void timer_wait(int ticks) {

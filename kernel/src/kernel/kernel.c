@@ -11,57 +11,25 @@
 #include <mem/pmm.h>
 #include <mem/vmm.h>
 
-#ifdef DEBUG
-#include <kernel/debug.h>
-#endif
-
 extern int end;
 
 int k_main(struct multiboot_info *mboot) {
   monitor_clear();
   printf("Welcome to Kernel!\n");
 
-#ifdef DEBUG_VGA
-  printf("New lines work!\n");
-  monitor_set_fg_color(LCYAN);
-  monitor_set_bg_color(MAGENTA);
-
-  printf("Colors work too!\n");
-  monitor_set_fg_color(WHITE);
-  monitor_set_bg_color(BLACK);
-#endif
-
+  // Install the descriptor tables.
   gdt_install();
-#ifdef DEBUG_GDT
-  printf("Segments work too!\n");
-#endif
-
   idt_install();
-#ifdef DEBUG_IDT
-  printf("Interrupt descriptors work too!\n");
-#endif
 
+  // Install our ISR and IRQ handlers.
   isr_install();
-#ifdef DEBUG_ISR
-  printf("Exceptions work too!\n");
-#endif
-
   irq_install();
-#ifdef DEBUG_IRQ
-  printf("Interrupts work too!\n");
-#endif
 
+  // Install our devices.
   timer_install();
-#ifdef DEBUG_PIC
-  printf("Timer works too!\n");
-#endif
-
   keyboard_install();
-#ifdef DEBUG_KBD
-  printf("Keyboard works too!\n");
-#endif
 
-#ifdef DEBUG_BIOS_MMAP
+#ifdef DEBUG
   monitor_write("Memory Map Address: ");
   monitor_write_hex(mboot->mmap_addr);
   monitor_write("\n");
@@ -73,7 +41,7 @@ int k_main(struct multiboot_info *mboot) {
 
   uint32_t memSize = 1024 + mboot->mem_lower + mboot->mem_upper * 64;
 
-#ifdef DEBUG_BIOS_MMAP
+#ifdef DEBUG
   char memString[10];
   utoa(memSize, memString, 10);
 
@@ -84,8 +52,8 @@ int k_main(struct multiboot_info *mboot) {
 
   multiboot_memory_map_t *mmap = mboot->mmap_addr;
   while (mmap < mboot->mmap_addr + mboot->mmap_length) {
-#ifdef DEBUG_BIOS_MMAP
-    monitor_write("Memory Area\n");
+#ifdef DEBUG
+    monitor_write("Memory Area - ");
 
     monitor_write("Start:");
     monitor_write_hex(mmap->addr);
@@ -126,18 +94,18 @@ int k_main(struct multiboot_info *mboot) {
   utoa(used_blocks, used_blocks_string, 10);
   utoa(free_blocks, free_blocks_string, 10);
 
-#ifdef DEBUG_PMM
+#ifdef DEBUG
   printf("Total blocks: %s\n", total_blocks_string);
   printf("Used blocks: %s\n", used_blocks_string);
   printf("Free blocks: %s\n", free_blocks_string);
 
-  printf("Physical Memory works too!\n");
+  printf("Physical Memory working.\n");
 #endif
 
   vmmngr_initialize();
 
-#ifdef DEBUG_VMM
-  printf("Virtual Memory works too!\n");
+#ifdef DEBUG
+  printf("Virtual Memory working.\n");
 
   char k_main_address[10];
   printf("k_main() address:");
@@ -153,9 +121,9 @@ int k_main(struct multiboot_info *mboot) {
   // kstrace(10);
 
   // For testing exceptions.
-  __asm__ __volatile__("int $6");
-  timer_wait(1000);
-  int zero = 0xFFFFFFFF / 0;
+  //__asm__ __volatile__("int $6");
+  // timer_wait(1000);
+  // int zero = 0xFFFFFFFF / 0;
 
   return 0xDEADBEEF;
 }

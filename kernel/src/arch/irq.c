@@ -1,6 +1,7 @@
 #include <arch/common.h>
 #include <arch/idt.h>
 #include <arch/irq.h>
+#include <libk/stdio.h>
 
 extern void irq0();
 extern void irq1();
@@ -77,6 +78,10 @@ void irq_install() {
 
   // Start the interrupts
   __asm__ volatile("sti");
+
+#ifdef DEBUG
+  printf("IRQs installed.\n");
+#endif
 }
 
 /* Each of the IRQ ISRs point to this function, rather than

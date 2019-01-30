@@ -1,4 +1,5 @@
 #include <arch/idt.h>
+#include <libk/stdio.h>
 #include <libk/stdlib.h>
 
 /* Declare an IDT of 256 entries. Although we will only use the
@@ -40,4 +41,8 @@ void idt_install() {
 
   /* Points the processor's internal register to the new IDT */
   idt_load();
+
+#ifdef DEBUG
+  printf("IDT installed.\n");
+#endif
 }

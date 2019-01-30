@@ -1,4 +1,5 @@
 #include <arch/gdt.h>
+#include <libk/stdio.h>
 
 /* Our GDT, with 5 entries, and finally our special GDT pointer */
 /* Entry 0: NULL Descriptor */
@@ -71,4 +72,8 @@ void gdt_install() {
      Remember: We need to load kernel memory access
      descriptors, not user ones! */
   gdt_reload_kernel();
+
+#ifdef DEBUG
+  printf("GDT installed.\n");
+#endif
 }
