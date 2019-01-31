@@ -3,7 +3,7 @@ AS	= nasm
 LD	= i686-elf-ld
 
 CFLAGS	:= -fno-builtin -fno-stack-protector -std=c11 -g -I ./inc -D DEBUG
-ASFLAGS	:= -f elf
+ASFLAGS	:= -f elf -I ./inc/
 LDFLAGS	:= -T ./conf/link-kernel.ld
 
 SRCS	:= $(shell find src -name "*.s" -o -name "*.c")
