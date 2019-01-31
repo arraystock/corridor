@@ -17,9 +17,14 @@ section .text
 global start
 start:
   cli                   ; Disable interrupts.
+  mov esp, stack        ; Set up the stack.
   call enable_paging    ; Enable paging and remap kernel to 3GB.
   xor ebp, ebp          ; Prepare NULL stack frame so traces know where to stop
   push ebp
   push ebx              ; Load multiboot header location
   call k_main           ; Call k_main().
   jmp $                 ; Loop forever.
+
+section .bss
+resb 8192               ; Measured in bytes, 8KB
+stack:
