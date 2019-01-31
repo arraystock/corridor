@@ -30,22 +30,14 @@ int k_main(struct multiboot_info *mboot) {
   keyboard_install();
 
 #ifdef DEBUG
-  monitor_write("Memory Map Address: ");
-  monitor_write_hex(mboot->mmap_addr);
-  monitor_write("\n");
-
-  monitor_write("Memory Map Length: ");
-  monitor_write_hex(mboot->mmap_length);
-  monitor_write("\n");
+  printf("Memory Map Address: %02X\n", mboot->mmap_addr);
+  printf("Memory Map Length: %02X\n", mboot->mmap_length);
 #endif
 
   uint32_t memSize = 1024 + mboot->mem_lower + mboot->mem_upper * 64;
 
 #ifdef DEBUG
-  char memString[10];
-  utoa(memSize, memString, 10);
-
-  printf("Memory size: %s\n", memString);
+  printf("Memory size: %d\n", memSize);
 #endif
 
   pmmngr_init(memSize, &end + 1);
@@ -53,19 +45,10 @@ int k_main(struct multiboot_info *mboot) {
   multiboot_memory_map_t *mmap = mboot->mmap_addr;
   while (mmap < mboot->mmap_addr + mboot->mmap_length) {
 #ifdef DEBUG
-    monitor_write("Memory Area - ");
-
-    monitor_write("Start:");
-    monitor_write_hex(mmap->addr);
-    monitor_write(" ");
-
-    monitor_write("End: ");
-    monitor_write_hex(mmap->addr + mmap->len);
-    monitor_write(" ");
-
-    monitor_write("Type:");
-    monitor_write_hex(mmap->type);
-    monitor_write("\n");
+    printf("Memory Area - ");
+    printf("Start: %02X ", mmap->addr);
+    printf("End: %02X ", mmap->addr + mmap->len);
+    printf("Type: %d\n", mmap->type);
 #endif
 
     if (mmap->type == 1) {
@@ -79,25 +62,17 @@ int k_main(struct multiboot_info *mboot) {
   // Mark kernel as used!
   pmmngr_deinit_region(0x100000, &end - 0x100000);
 
-  uint32_t total_blocks = pmmngr_get_block_count();
-  uint32_t used_blocks = pmmngr_get_use_block_count();
-  uint32_t free_blocks = pmmngr_get_free_block_count();
-
-  char total_blocks_string[10];
-  char used_blocks_string[10];
-  char free_blocks_string[10];
+  uint32_t total_blocks = pmmngr_get_block_count(),
+           used_blocks = pmmngr_get_use_block_count(),
+           free_blocks = pmmngr_get_free_block_count();
 
   // Sanity Check
   ASSERT(total_blocks == (used_blocks + free_blocks));
 
-  utoa(total_blocks, total_blocks_string, 10);
-  utoa(used_blocks, used_blocks_string, 10);
-  utoa(free_blocks, free_blocks_string, 10);
-
 #ifdef DEBUG
-  printf("Total blocks: %s\n", total_blocks_string);
-  printf("Used blocks: %s\n", used_blocks_string);
-  printf("Free blocks: %s\n", free_blocks_string);
+  printf("Total blocks: %ld\n", total_blocks);
+  printf("Used blocks: %ld\n", used_blocks);
+  printf("Free blocks: %ld\n", free_blocks);
 
   printf("Physical Memory working.\n");
 #endif
@@ -106,12 +81,7 @@ int k_main(struct multiboot_info *mboot) {
 
 #ifdef DEBUG
   printf("Virtual Memory working.\n");
-
-  char k_main_address[10];
-  printf("k_main() address:");
-  utoa(k_main, k_main_address, 16);
-  printf("0x%s\n", k_main_address);
-
+  printf("k_main() address: %02X\n", k_main);
 #endif
 
   // For testing assertions.
