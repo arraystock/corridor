@@ -61,6 +61,18 @@ int printf(const char *restrict format, ...) {
       if (!print(&c, sizeof(c)))
         return -1;
       written++;
+    } else if (*format == 'd') {
+      format++;
+      char str[10];
+      itoa(va_arg(parameters, int), str, 10);
+      size_t len = strlen(str);
+      if (maxrem < len) {
+        // TODO: Set errno to EOVERFLOW.
+        return -1;
+      }
+      if (!print(str, len))
+        return -1;
+      written += len;
     } else if (*format == 's') {
       format++;
       const char *str = va_arg(parameters, const char *);
@@ -85,6 +97,43 @@ int printf(const char *restrict format, ...) {
       if (!print(str, len))
         return -1;
       written += len;
+    } else if (*format == 'l') {
+      format++;
+      if (*format == 'd') {
+        format++;
+        char str[10];
+        utoa(va_arg(parameters, long int), str, 10);
+        size_t len = strlen(str);
+        if (maxrem < len) {
+          // TODO: Set errno to EOVERFLOW.
+          return -1;
+        }
+        if (!print(str, len))
+          return -1;
+        written += len;
+      }
+    } else if (*format == '0') {
+      format++;
+      if (*format == '2') {
+        format++;
+        if (*format == 'X') {
+          format++;
+          print("0x", 2);
+          unsigned int i = va_arg(parameters, unsigned int);
+
+          uint32_t counter = 8;
+          uint8_t cur;
+
+          while (counter-- > 0) {
+            cur = (i & 0xf0000000) >> 28;
+            i <<= 4;
+            if (cur >= 0xA)
+              cur += 0x07;
+            cur += 0x30;
+            putchar(cur);
+          }
+        }
+      }
     } else {
       format = format_begun_at;
       size_t len = strlen(format);
