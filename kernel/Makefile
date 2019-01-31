@@ -11,18 +11,21 @@ OBJS	:= $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCS)))
 
 FORMAT	:= $(shell find . -name "*.c") $(shell find . -name "*.h")
 
+.PHONY: all clean run debug clang-format
+
 all: ./bin/kernel
 
 clean:
 	-rm -rf $(OBJS) ./bin/
 
-run: ./bin/kernel
-	-qemu-system-i386 -kernel ./bin/kernel -monitor stdio
+run: ../corridor.iso
+	../make_iso.sh
+	qemu-system-i386 -hda ../corridor.iso -monitor stdio
 
-debug: ./bin/kernel
-	-qemu-system-i386 -kernel ./bin/kernel -s -S&
-	-sleep 1
-	-gdb
+debug: ../corridor.iso
+	qemu-system-i386 -hda ../corridor.iso -s -S&
+	sleep 1
+	gdb
 
 clang-format:
 	clang-format -style=llvm -i $(FORMAT)
@@ -30,3 +33,6 @@ clang-format:
 ./bin/kernel: $(OBJS)
 	-@mkdir bin/
 	$(LD) $(LDFLAGS) -o ./bin/kernel $(OBJS)
+
+../corridor.iso: all
+	../make_iso.sh
