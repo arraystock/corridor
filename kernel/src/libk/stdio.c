@@ -1,10 +1,10 @@
 #include <dev/vga.h>
-#include <libk/stdio.h>
 
 #include <libk/limits.h>
 #include <libk/stdarg.h>
 #include <libk/stdbool.h>
 #include <libk/stdio.h>
+#include <libk/stdlib.h>
 #include <libk/string.h>
 
 int puts(const char *string) { return printf("%s\n", string); }
@@ -64,6 +64,19 @@ int printf(const char *restrict format, ...) {
     } else if (*format == 's') {
       format++;
       const char *str = va_arg(parameters, const char *);
+      size_t len = strlen(str);
+      if (maxrem < len) {
+        // TODO: Set errno to EOVERFLOW.
+        return -1;
+      }
+      if (!print(str, len))
+        return -1;
+      written += len;
+    } else if (*format == 'x') {
+      format++;
+      print("0x", 2);
+      char str[10];
+      utoa(va_arg(parameters, unsigned int), str, 16);
       size_t len = strlen(str);
       if (maxrem < len) {
         // TODO: Set errno to EOVERFLOW.
