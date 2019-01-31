@@ -16,10 +16,9 @@ FORMAT	:= $(shell find . -name "*.c") $(shell find . -name "*.h")
 all: ./bin/kernel
 
 clean:
-	-rm -rf $(OBJS) ./bin/
+	-rm -rf $(OBJS) ./bin/ corridor.iso ./iso
 
 run: ../corridor.iso
-	../make_iso.sh
 	qemu-system-i386 -hda ../corridor.iso -monitor stdio
 
 debug: ../corridor.iso
@@ -35,4 +34,4 @@ clang-format:
 	$(LD) $(LDFLAGS) -o ./bin/kernel $(OBJS)
 
 ../corridor.iso: all
-	../make_iso.sh
+	../make_iso.sh ../grub.cfg ./bin/kernel ../corridor.iso
