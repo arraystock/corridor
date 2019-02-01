@@ -143,22 +143,22 @@ void kstrace(int depth) {
 }
 
 void kpanic(char *err, struct regs *r) {
-  monitor_set_bg_color(RED);
+  monitor_set_bg_color(BLUE);
   monitor_clear();
 
   monitor_set_fg_color(YELLOW);
-  monitor_set_bg_color(GREEN);
+  monitor_set_bg_color(LBLUE);
 
   for (int i = 0; i < 80; i++)
     putchar(' ');
 
-  monitor_write_center("KERNEL PANIC <Oh no!>");
+  monitor_write_center("KERNEL PANIC");
 
   for (int i = 0; i < 80; i++)
     putchar(' ');
 
   monitor_set_fg_color(YELLOW);
-  monitor_set_bg_color(RED);
+  monitor_set_bg_color(BLUE);
 
   monitor_write("\n");
   monitor_write_center(err);
@@ -302,7 +302,7 @@ void kpanic(char *err, struct regs *r) {
 
     monitor_write("[");
     monitor_set_fg_color(LGRAY);
-    monitor_write("INTNO:  ");
+    monitor_write("INTNO: ");
     monitor_set_fg_color(YELLOW);
     monitor_write_hex(r->int_no);
     monitor_write("] ");
@@ -310,19 +310,24 @@ void kpanic(char *err, struct regs *r) {
     monitor_write("\n");
   }
 
-  monitor_write("\n");
-  monitor_write("\n");
-  monitor_write("\n");
-  monitor_write("\n");
-  monitor_write("\n");
+  monitor_write("\n\n");
   /*
   monitor_write_center("Dedicated to G,");
   monitor_write_center("who helps me fix all the errors in my life.");
   */
-  monitor_write_center("We crashed and that is sad,");
+  monitor_write_center("The kernel done goofed!");
+  monitor_write("\n");
   monitor_write_center(
-      "but if you send a screenshot our way we might be able to fix that.");
-  monitor_write_center("Thank you for using Kernel! :)");
+      "We're still in development, so this isn't completely unexpected.");
+
+  monitor_write("\n");
+
+  monitor_write_center("Please start an issue and submit a screenshot.");
+  monitor_write_center(
+      "You can do this at 'https://github.com/arraystock/corridor'.");
+  monitor_write("\n");
+  monitor_write_center(" Thank "
+                       "you for using corridor!");
 
   abort();
 }
