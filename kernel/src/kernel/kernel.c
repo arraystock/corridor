@@ -4,6 +4,7 @@
 #include <arch/isr.h>
 #include <boot/multiboot.h>
 #include <dev/keyboard.h>
+#include <dev/serial.h>
 #include <dev/timer.h>
 #include <dev/vga.h>
 #include <libk/stdio.h>
@@ -84,6 +85,11 @@ int k_main(struct multiboot_info *mboot) {
   printf("k_main() address: %02X\n", k_main);
 #endif
 
+#ifdef DEBUG
+  serial_initialize();
+  printf("Serial port initialized.\n");
+  serial_print("Serial port initialized.\n");
+#endif
   // For testing assertions.
   // ASSERT("That's it for now!" == 0);
 
