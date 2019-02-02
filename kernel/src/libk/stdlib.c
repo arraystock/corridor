@@ -124,7 +124,7 @@ void kstrace(int depth) {
   int *ra = (int *)(&depth - 1);
 
   printf("Stack trace: (Return to <");
-  monitor_write_hex(ra);
+  monitor_write_hex((int)ra);
   printf(">)\n");
 
   for (int frame = 0; frame < depth; frame++) {

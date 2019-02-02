@@ -40,10 +40,10 @@ int k_main(struct multiboot_info *mboot) {
   printf("Memory size: %d\n", memSize);
 #endif
 
-  pmmngr_init(memSize, &end + 1);
+  pmmngr_init(memSize, (int)&end + 1);
 
-  multiboot_memory_map_t *mmap = mboot->mmap_addr;
-  while (mmap < mboot->mmap_addr + mboot->mmap_length) {
+  multiboot_memory_map_t *mmap = (multiboot_memory_map_t *)mboot->mmap_addr;
+  while ((int)mmap < mboot->mmap_addr + mboot->mmap_length) {
 #ifdef DEBUG
     printf("Memory Area - ");
     printf("Start: %02X ", mmap->addr);
@@ -60,7 +60,7 @@ int k_main(struct multiboot_info *mboot) {
   }
 
   // Mark kernel as used!
-  pmmngr_deinit_region(0x100000, &end - 0x100000);
+  pmmngr_deinit_region(0x100000, (int)&end - 0x100000);
 
   uint32_t total_blocks = pmmngr_get_block_count(),
            used_blocks = pmmngr_get_use_block_count(),
