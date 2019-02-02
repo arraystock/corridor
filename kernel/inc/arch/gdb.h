@@ -5,6 +5,8 @@
 
 #define BUFMAX 400
 
+#define BREAKPOINT() __asm__("   int $3");
+
 static char initialized; /* boolean flag. != 0 means we've been initialized */
 
 int remote_debug;
@@ -32,8 +34,6 @@ int hexToInt(char **ptr, int *intValue);
 
 void handle_exception(int exceptionVector);
 void set_debug_traps(void);
-
-void breakpoint(void);
 
 #endif
 #endif

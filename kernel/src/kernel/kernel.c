@@ -37,7 +37,7 @@ int k_main(struct multiboot_info *mboot) {
   serial_print("Serial port initialized.\n");
   set_debug_traps(); // Exception handlers for GDB
   printf("Waiting for GDB... ");
-  breakpoint(); // Sync with GDB.
+  BREAKPOINT(); // Sync with GDB.
   printf("Continuing.\n");
 #endif
 
@@ -94,6 +94,7 @@ int k_main(struct multiboot_info *mboot) {
 #ifdef DEBUG
   printf("Virtual Memory working.\n");
   printf("k_main() address: %02X\n", k_main);
+  BREAKPOINT();
 #endif
 
   // For testing assertions.

@@ -696,8 +696,8 @@ void handle_exception(int exceptionVector) {
   gdb_i386vector = exceptionVector;
 
   if (remote_debug) {
-    printf("Vector: %d, SR: 0x%x, PC: 0x%x\n", exceptionVector, registers[PS],
-           registers[PC]);
+    /* printf("Vector: %d, SR: %x, PC: %x\n", exceptionVector, registers[PS],
+           registers[PC]); */
   }
 
   /* reply to host that an exception has occurred */
@@ -868,16 +868,6 @@ void set_debug_traps(void) {
   idt_set(16, (unsigned long)_catchException16);
 
   initialized = 1;
-}
-
-/* This function will generate a breakpoint exception.  It is used at the
-   beginning of a program to sync up with a debugger and can be used
-   otherwise as a quick means to stop program execution and "break" into
-   the debugger. */
-
-void breakpoint(void) {
-  if (initialized)
-    BREAKPOINT();
 }
 
 #endif
