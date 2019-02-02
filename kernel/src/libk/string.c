@@ -40,6 +40,13 @@ void *memset(void *bufptr, int value, size_t size) {
   return bufptr;
 }
 
+void strcpy(char dest[], const char source[]) {
+  int i = 0;
+  while ((dest[i] = source[i]) != '\0') {
+    i++;
+  }
+}
+
 size_t strlen(const char *str) {
   size_t len = 0;
   while (str[len])
