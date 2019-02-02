@@ -1,3 +1,4 @@
+#include <arch/gdb.h>
 #include <arch/gdt.h>
 #include <arch/idt.h>
 #include <arch/irq.h>
@@ -29,6 +30,16 @@ int k_main(struct multiboot_info *mboot) {
   // Install our devices.
   timer_install();
   keyboard_install();
+
+#ifdef DEBUG
+  serial_initialize();
+  printf("Serial port initialized.\n");
+  serial_print("Serial port initialized.\n");
+  set_debug_traps(); // Exception handlers for GDB
+  printf("Waiting for GDB... ");
+  breakpoint(); // Sync with GDB.
+  printf("Continuing.\n");
+#endif
 
 #ifdef DEBUG
   printf("Memory Map Address: %02X\n", mboot->mmap_addr);
@@ -85,11 +96,6 @@ int k_main(struct multiboot_info *mboot) {
   printf("k_main() address: %02X\n", k_main);
 #endif
 
-#ifdef DEBUG
-  serial_initialize();
-  printf("Serial port initialized.\n");
-  serial_print("Serial port initialized.\n");
-#endif
   // For testing assertions.
   // ASSERT("That's it for now!" == 0);
 

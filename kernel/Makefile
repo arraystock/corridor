@@ -19,10 +19,10 @@ clean:
 	-rm -rf $(OBJS) ./bin/ corridor.iso ./iso
 
 run: ../corridor.iso
-	qemu-system-i386 -hda ../corridor.iso -monitor stdio
+	qemu-system-i386 -hda ../corridor.iso -monitor stdio -serial telnet:127.0.0.1:1234,server,nowait
 
 debug: ../corridor.iso
-	qemu-system-i386 -hda ../corridor.iso -s -S&
+	qemu-system-i386 -hda ../corridor.iso -serial telnet:127.0.0.1:1234,server,nowait -s&
 	sleep 1
 	gdb
 
