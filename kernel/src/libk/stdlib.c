@@ -110,8 +110,9 @@ void utoa(unsigned int val, char *buf, int base) {
 }
 
 void abort() {
-  while (1) {
-  }
+  __asm__("cli"); // Stop interrupts.
+  while (1)
+    __asm__("hlt");
 }
 
 void kstrace(int depth) {
