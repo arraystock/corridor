@@ -53,3 +53,19 @@ size_t strlen(const char *str) {
     len++;
   return len;
 }
+
+int strcmp(const char *s1, const char *s2) {
+  return strncmp(s1, s2, strlen(s1) > strlen(s2) ? strlen(s1) : strlen(s2));
+}
+
+int strncmp(const char *s1, const char *s2, int n) {
+  if (n == 0)
+    return 0;
+  do {
+    if (*s1 != *s2++)
+      return *(unsigned const char *)s1 - *(unsigned const char *)--s2;
+    if (*s1++ == 0)
+      break;
+  } while (--n != 0);
+  return 0;
+}
