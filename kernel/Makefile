@@ -6,6 +6,8 @@ CFLAGS	:= -fno-builtin -fno-stack-protector -std=c11 -g -I ./inc -D DEBUG -D GDB
 ASFLAGS	:= -f elf -I ./inc/
 LDFLAGS	:= -T ./conf/link-kernel.ld
 
+QFLAGS	:= -hda ../corridor.iso -serial telnet:127.0.0.1:1234,server,nowait
+
 SRCS	:= $(shell find src -name "*.s" -o -name "*.c")
 OBJS	:= $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCS)))
 
@@ -19,10 +21,10 @@ clean:
 	-rm -rf $(OBJS) ./bin/ corridor.iso ./iso
 
 run: ../corridor.iso
-	qemu-system-i386 -hda ../corridor.iso -monitor stdio -serial telnet:127.0.0.1:1234,server,nowait
+	qemu-system-i386 $(QFLAGS)
 
 debug: ../corridor.iso
-	qemu-system-i386 -hda ../corridor.iso -serial telnet:127.0.0.1:1234,server,nowait -s&
+	qemu-system-i386 $(QFLAGS) -s&
 	sleep 1
 	gdb
 
