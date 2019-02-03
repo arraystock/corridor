@@ -337,10 +337,6 @@ void *kmemset(void *b, int c, int len) {
 }
 
 void kpanicAssert(char *file, int line, char *desc) {
-  char string[5];
-  itoa(line, string, 10);
-
-  printf("Assertion Failed (%s) at %s:%s\n", desc, file, string);
-
+  printf("Assertion Failed (%s) at %s:%d\n", desc, file, line);
   abort();
 }
