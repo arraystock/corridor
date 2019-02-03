@@ -1,9 +1,10 @@
-#include <arch/gdb.h>
 #include <arch/gdt.h>
 #include <arch/idt.h>
 #include <arch/irq.h>
 #include <arch/isr.h>
 #include <boot/multiboot.h>
+#include <dbg/backtrace.h>
+#include <dbg/gdb.h>
 #include <dev/keyboard.h>
 #include <dev/serial.h>
 #include <dev/timer.h>

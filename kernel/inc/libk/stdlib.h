@@ -21,7 +21,6 @@ void utoa(unsigned int val, char *buf, int base);
 void kpanic(char *err, struct regs *r);
 void *kmemset(void *b, int c, int len);
 void abort();
-void kstrace(int depth);
 void kpanicAssert(char *file, int line, char *desc);
 
 #endif
