@@ -39,14 +39,11 @@ int k_main(struct multiboot_info *mboot) {
   serial_print("Serial port initialized.\n");
 #endif
 
-#ifdef DEBUG
-  printf("Memory Map Address: %02X\n", mboot->mmap_addr);
-  printf("Memory Map Length: %02X\n", mboot->mmap_length);
-#endif
-
   uint32_t memSize = 1024 + mboot->mem_lower + mboot->mem_upper * 64;
 
 #ifdef DEBUG
+  printf("Memory Map Address: %02X\n", mboot->mmap_addr);
+  printf("Memory Map Length: %02X\n", mboot->mmap_length);
   printf("Memory size: %d\n", memSize);
 #endif
 
