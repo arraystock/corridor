@@ -3,7 +3,10 @@
 ENTRY(start)
 SECTIONS
 {
-  .boot 0x100000 : { *(.multiboot) }
+  .boot 0x100000 :
+  {
+    *(.multiboot)
+  }
 
   .text :
   {
@@ -14,10 +17,10 @@ SECTIONS
 
   .data :
   {
-     data = .; _data = .; __data = .;
-     *(.data)
-     *(.rodata)
-     . = ALIGN(4096);
+    data = .; _data = .; __data = .;
+    *(.data)
+    *(.rodata)
+    . = ALIGN(4096);
   }
 
   .bss :
@@ -27,5 +30,8 @@ SECTIONS
     . = ALIGN(4096);
   }
 
-  end = .; _end = .; __end = .;
+  .end :
+  {
+    end = .; _end = .; __end = .;
+  }
 }
