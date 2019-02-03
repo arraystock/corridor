@@ -92,6 +92,14 @@ void keyboard_handler(struct regs *r) {
       uppercase = 1;
       return;
     }
+    // Caps lock was pressed!
+    if (scancode == 58) {
+      if (uppercase == 0)
+        uppercase = 1;
+      else
+        uppercase = 0;
+      return;
+    }
     if (uppercase == 0) {
       monitor_put(us_lowercase[scancode]);
     }
