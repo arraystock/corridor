@@ -10,6 +10,13 @@ uint8_t cursor_y = 0;
 uint8_t bg_color = BLACK;
 uint8_t fg_color = WHITE;
 
+void enable_cursor() {
+  outb(0x3D4, 0x0A);
+  outb(0x3D5, (inb(0x3D5) & 0xC0) | 14);
+  outb(0x3D4, 0x0B);
+  outb(0x3D5, (inb(0x3D5) & 0xE0) | 15);
+}
+
 // Updates the hardware cursor.
 static void move_cursor() {
   // The screen is 80 characters wide...

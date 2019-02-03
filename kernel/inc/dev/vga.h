@@ -3,6 +3,9 @@
 
 #include <libk/types.h>
 
+// Enables the hardware cursor.
+void enable_cursor();
+
 // Write a single character out to the screen.
 void monitor_put(char c);
 

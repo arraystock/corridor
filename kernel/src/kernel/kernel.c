@@ -19,6 +19,8 @@ int k_main(struct multiboot_info *mboot) {
   monitor_clear();
   printf("Welcome to corridor!\n");
 
+  enable_cursor();
+
   // Install the descriptor tables.
   gdt_install();
   idt_install();
