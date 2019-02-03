@@ -129,7 +129,7 @@ int registers[NUMREGS];
 
 #define STACKSIZE 10000
 int remcomStack[STACKSIZE / sizeof(int)];
-static int *stackPtr = &remcomStack[STACKSIZE / sizeof(int) - 1];
+int *stackPtr = &remcomStack[STACKSIZE / sizeof(int) - 1];
 
 /***************************  ASSEMBLY CODE MACROS *************************/
 /* 									   */
