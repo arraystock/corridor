@@ -2,7 +2,7 @@ CC	= i686-elf-gcc
 AS	= nasm
 LD	= i686-elf-ld
 
-CFLAGS	:= -fno-builtin -fno-stack-protector -std=c11 -g -I ./inc -D DEBUG
+CFLAGS	:= -fno-builtin -fno-stack-protector -std=c11 -g -I ./inc -D DEBUG -D GDB_DEBUG
 ASFLAGS	:= -f elf -I ./inc/
 LDFLAGS	:= -T ./conf/link-kernel.ld
 
