@@ -4,11 +4,11 @@ Homebrew microkernel for x86. Originally written by naliferopoulos.
 ![alt Kernel Panic](/kernel_panic.png)
 
 ## What does it do?
-corridor only targets x86 (i386+) computers, and as of now it supports Multiboot (GRUB *should* load it),
-Paging, Physical and Virtual Memory Managers, Interrupts, Exception Handling, PIC, a simple Keyboard driver and
-a Text Mode VGA driver. Application loading will come in the next updates.
+corridor only targets x86 (i386+) computers, and as of now it supports Multiboot,
+Paging, Physical and Virtual Memory Managers, Interrupts, Exception Handling, PIC, a simple Keyboard driver,
+a Text Mode VGA driver, and more.
 
-## Nice! How do I compile?
+## Nice! How do I compile it?
 Compiling and correctly linking the kernel requires setting up a cross-compiler and toolchain (GCC and Binutils) for
 your system. After you have set up your cross-toolchain, edit the Makefile so that it points to your cross-binaries,
 type `make` and voila!
