@@ -6,7 +6,7 @@ CFLAGS	:= -fno-builtin -fno-stack-protector -std=c11 -g -I ./inc -D DEBUG
 ASFLAGS	:= -f elf -I ./inc/
 LDFLAGS	:= -T ./conf/link-kernel.ld
 
-QFLAGS	:= -hda ../corridor.iso -serial telnet:127.0.0.1:1234,server,nowait
+QFLAGS	:= -hda ../corridor.iso -soundhw pcspk -serial telnet:127.0.0.1:1234,server,nowait
 
 SRCS	:= $(shell find src -name "*.s" -o -name "*.c")
 OBJS	:= $(patsubst %.s, %.o, $(patsubst %.c, %.o, $(SRCS)))
