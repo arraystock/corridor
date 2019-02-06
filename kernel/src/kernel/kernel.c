@@ -6,6 +6,7 @@
 #include <dbg/backtrace.h>
 #include <dbg/gdb.h>
 #include <dev/keyboard.h>
+#include <dev/pcspeak.h>
 #include <dev/serial.h>
 #include <dev/timer.h>
 #include <dev/vga.h>
@@ -95,6 +96,15 @@ int k_main(struct multiboot_info *mboot) {
   printf("Waiting for GDB...\n");
   BREAKPOINT(); // Sync with GDB.
 #endif
+#endif
+
+#ifdef DEBUG
+  printf("Testing PC speaker... ");
+  // play_sound(1000);
+  // timer_wait(10);
+  // nosound();
+  beep();
+  printf("Done.\n");
 #endif
 
   // For testing assertions.
